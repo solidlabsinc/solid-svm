@@ -1,4 +1,10 @@
 use anchor_lang::prelude::*;
+mod state;
+mod handlers;
+mod common;
+mod utils;
+
+use crate::handlers::*;
 
 declare_id!("A9FV1a1U1w1TkfAA6JWeH2qUaRJJrTyqhVoeomJUBVzr");
 
@@ -6,11 +12,15 @@ declare_id!("A9FV1a1U1w1TkfAA6JWeH2qUaRJJrTyqhVoeomJUBVzr");
 pub mod solid_svm {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
-        Ok(())
+    pub fn register(ctx: Context<Register>, username: String) -> Result<()> {
+        handler_register::process(ctx, username);
+    }
+
+    pub fn link_wallet(ctx: Context<LinkWallet>, wallet: Pubkey) -> Result<()> {
+        handler_link_wallet::process(ctx, wallet)
+    }
+
+    pub fn attestation(ctx: Context<MockAttestationCtx>) -> Result<()> {
+        handler_attestation::process(ctx)
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}
